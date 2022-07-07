@@ -1,0 +1,715 @@
+-> create database sqlAssignment;
+->create table salespeople(snum int not null primary key, sname varchar(50) not null, city varchar(50), comm float );
+Query OK, 0 rows affected (0.49 sec)
+-> insert into salespeople values (1,'Megha','Nashik', 0.10), (2,'Mayur','pune',0.13), (3,'Rahul','Mumbai',0.14),(4,'Prachiti','Solapur',0.15),(5,'Varun','germany',0.16);
+ 	**********
+
+->create table customers (cnum int not null, cname varchar(50) not null, city varchar(50), rating int, snum int not null, constraint pk_customers_cnum primary key(cnum), constraint fk_customers_snum foreign key(snum) references salespeople(snum));
+-> insert into customers values(11,'aishwarya','nashik', 100,1), (12,'sonali', 'mumbai', 200, 2), (13,'ananya', 'pune', 300, 3), (14,'vinni', 'solapur', 200, 4), (15,'ayesha', 'germany', 300, 5);
+Query OK, 5 rows affected (0.09 sec)
+
+	**********
+
+-> create table orders (onum int not null, amt float not null, odate date not null, cnum int not null, snum int not null, constraint pk_orders_onum primary key(onum), constraint fk_orders_cnum foreign key(cnum) references customers(cnum), constraint fk_orders_snum foreign key(snum) references salespeople(snum));
+Query OK, 0 rows affected (0.60 sec)
+-> mysql> insert into orders values(32,767.19,'1994-08-03',12,3);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into orders values(33,1900.10,'1994-08-03',11,4);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into orders values(34,5160.45,'1994-08-03',13,5);
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into orders values(35,1098.16,'1994-08-03',14,2);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into orders values(36,1713.23,'1994-08-03',13,1);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into orders values(37,75.75,'1994-08-03',12,2);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into orders values(38,4723.00,'1994-08-03',11,3);
+Query OK, 1 row affected (0.29 sec)
+
+mysql> insert into orders values(39,1309.95,'1994-08-03',14,4);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into orders values(40,9891.88,'1994-08-03',15,5);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into orders values(41,5160.45,'1994-08-03',12,5);
+Query OK, 1 row affected (0.09 sec)
+
+	**********
+
+mysql> select * from salespeople;
++------+----------+---------+------+
+| snum | sname    | city    | comm |
++------+----------+---------+------+
+|    1 | Megha    | Nashik  |  0.1 |
+|    2 | Mayur    | pune    | 0.13 |
+|    3 | Rahul    | Mumbai  | 0.14 |
+|    4 | Prachiti | Solapur | 0.15 |
+|    5 | Varun    | germany | 0.16 |
++------+----------+---------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+-----------+---------+--------+------+
+| cnum | cname     | city    | rating | snum |
++------+-----------+---------+--------+------+
+|   11 | aishwarya | nashik  |    100 |    1 |
+|   12 | sonali    | mumbai  |    200 |    2 |
+|   13 | ananya    | pune    |    300 |    3 |
+|   14 | vinni     | solapur |    200 |    4 |
+|   15 | ayesha    | germany |    300 |    5 |
++------+-----------+---------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+|   31 |   18.96 | 1994-08-03 |   12 |    1 |
+|   32 |  767.19 | 1994-08-03 |   12 |    3 |
+|   33 |  1900.1 | 1994-08-03 |   11 |    4 |
+|   34 | 5160.45 | 1994-08-03 |   13 |    5 |
+|   35 | 1098.16 | 1994-08-03 |   14 |    2 |
+|   36 | 1713.23 | 1994-08-03 |   13 |    1 |
+|   37 |   75.75 | 1994-08-03 |   12 |    2 |
+|   38 |    4723 | 1994-08-03 |   11 |    3 |
+|   39 | 1309.95 | 1994-08-03 |   14 |    4 |
+|   40 | 9891.88 | 1994-08-03 |   15 |    5 |
+|   41 | 5160.45 | 1994-08-03 |   12 |    5 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+	***********
+
+1. Display snum, sname, city and comm of all salespeople;
+--->mysql> select snum, sname, city, comm from salespeople;
++------+----------+---------+------+
+| snum | sname    | city    | comm |
++------+----------+---------+------+
+|    1 | Megha    | Nashik  |  0.1 |
+|    2 | Mayur    | pune    | 0.13 |
+|    3 | Rahul    | Mumbai  | 0.14 |
+|    4 | Prachiti | Solapur | 0.15 |
+|    5 | Varun    | germany | 0.16 |
++------+----------+---------+------+
+5 rows in set (0.00 sec)
+
+2.Display all snum without duplicates from all orders.
+-->mysql> select distinct snum from orders;
++------+
+| snum |
++------+
+|    1 |
+|    2 |
+|    3 |
+|    4 |
+|    5 |
++------+
+5 rows in set (0.00 sec)
+
+3.Display names and commissions of all salespeople in london/Nashik.
+-->mysql> select sname, comm from salespeople where city = 'Nashik';
++-------+------+
+| sname | comm |
++-------+------+
+| Megha |  0.1 |
++-------+------+
+1 row in set (0.00 sec)
+
+4.All customers with rating of 200.
+-->mysql> select cname from customers where rating = 200;
++--------+
+| cname  |
++--------+
+| sonali |
+| vinni  |
++--------+
+2 rows in set (0.00 sec)
+
+5. Produce order no, amount and date from all rows in the order table.
+-->mysql> select onum, amt, odate from orders;
++------+---------+------------+
+| onum | amt     | odate      |
++------+---------+------------+
+|   31 |   18.96 | 1994-08-03 |
+|   32 |  767.19 | 1994-08-03 |
+|   33 |  1900.1 | 1994-08-03 |
+|   34 | 5160.45 | 1994-08-03 |
+|   35 | 1098.16 | 1994-08-03 |
+|   36 | 1713.23 | 1994-08-03 |
+|   37 |   75.75 | 1994-08-03 |
+|   38 |    4723 | 1994-08-03 |
+|   39 | 1309.95 | 1994-08-03 |
+|   40 | 9891.88 | 1994-08-03 |
+|   41 | 5160.45 | 1994-08-03 |
++------+---------+------------+
+11 rows in set (0.00 sec)
+
+6.All customers in san jose, who have rating more than 200.
+-->mysql> select cname from customers where rating>200;
++--------+
+| cname  |
++--------+
+| ananya |
+| ayesha |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> select cname from customers where city = 'pune' and rating > 200;
++--------+
+| cname  |
++--------+
+| ananya |
++--------+
+1 row in set (0.00 sec)
+
+7. All customers who were either located in san jose or had a rating above 200.
+-->mysql> select cname from customers where city = 'pune' or rating > 200;
++--------+
+| cname  |
++--------+
+| ananya |
+| ayesha |
++--------+
+2 rows in set (0.00 sec)
+
+8.All orders for more than $1000.
+-->mysql> select * from orders where amt >1000;
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+|   33 |  1900.1 | 1994-08-03 |   11 |    4 |
+|   34 | 5160.45 | 1994-08-03 |   13 |    5 |
+|   35 | 1098.16 | 1994-08-03 |   14 |    2 |
+|   36 | 1713.23 | 1994-08-03 |   13 |    1 |
+|   38 |    4723 | 1994-08-03 |   11 |    3 |
+|   39 | 1309.95 | 1994-08-03 |   14 |    4 |
+|   40 | 9891.88 | 1994-08-03 |   15 |    5 |
+|   41 | 5160.45 | 1994-08-03 |   12 |    5 |
++------+---------+------------+------+------+
+8 rows in set (0.00 sec)
+
+9. Names and cities of all salespeople in london with commission above 0.10.
+-->mysql> select sname, city from salespeople where comm>0.10;
++----------+---------+
+| sname    | city    |
++----------+---------+
+| Megha    | Nashik  |
+| Mayur    | pune    |
+| Rahul    | Mumbai  |
+| Prachiti | Solapur |
+| Varun    | germany |
++----------+---------+
+5 rows in set (0.00 sec)
+
+10. All customers excluding those with rating <=100 unless they are located in rome.
+-->mysql> select cname from customers where rating <= 100 or city = 'nashik';
++-----------+
+| cname     |
++-----------+
+| aishwarya |
+| akshay    |
++-----------+
+2 rows in set (0.00 sec)
+
+11. All salespeople either in barcelona or in london.
+-->mysql> select sname, city from salespeople where city in ('mumbai','nashik');
++----------+--------+
+| sname    | city   |
++----------+--------+
+| Megha    | Nashik |
+| Rahul    | Mumbai |
+| vanshika | mumbai |
++----------+--------+
+3 rows in set (0.00 sec)
+
+14.All salespeople with commission between 0.10 and 0.16(Boundary values should be excluded)
+-->mysql> select sname from salespeople where comm >0.10 and comm<0.16;
++----------+
+| sname    |
++----------+
+| Megha    |
+| Mayur    |
+| Rahul    |
+| Prachiti |
+| Varun    |
++----------+
+5 rows in set (0.00 sec)
+
+15.All customers with NULL values in city column.
+->mysql> select cname from customers where city is null;
+Empty set (0.00 sec)
+
+
+16.All orders taken on oct 3rd and 4th 1994.
+->mysql> select * from orders where odate in ('1994-08-03','1994-08-04');
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+|   31 |   18.96 | 1994-08-03 |   12 |    1 |
+|   32 |  767.19 | 1994-08-03 |   12 |    3 |
+|   33 |  1900.1 | 1994-08-03 |   11 |    4 |
+|   34 | 5160.45 | 1994-08-03 |   13 |    5 |
+|   35 | 1098.16 | 1994-08-03 |   14 |    2 |
+|   36 | 1713.23 | 1994-08-03 |   13 |    1 |
+|   37 |   75.75 | 1994-08-03 |   12 |    2 |
+|   38 |    4723 | 1994-08-03 |   11 |    3 |
+|   39 | 1309.95 | 1994-08-03 |   14 |    4 |
+|   40 | 9891.88 | 1994-08-03 |   15 |    5 |
+|   41 | 5160.45 | 1994-08-03 |   12 |    5 |
++------+---------+------------+------+------+
+11 rows in set (0.00 sec)
+
+17.All customers serviced by peel or motika.(difficult)
+-->mysql> select cname from customers, orders where orders.cnum = customers.cnum and orders.snum in(select snum from salespeople where sname in('rahul','mayur'));
++-----------+
+| cname     |
++-----------+
+| vinni     |
+| sonali    |
+| sonali    |
+| aishwarya |
++-----------+
+4 rows in set (0.07 sec)
+
+18.All customers whose names begin with a letter from A to B.
+
+
+19. All orders except those with 0 or null value in amt field.
+-->
+mysql> select onum from orders where amt!= 0 or amt is not null;
++------+
+| onum |
++------+
+|   31 |
+|   32 |
+|   33 |
+|   34 |
+|   35 |
+|   36 |
+|   37 |
+|   38 |
+|   39 |
+|   40 |
+|   41 |
++------+
+11 rows in set (0.00 sec)
+
+
+20. Count the number of salespeople currently listing orders in the order table
+-->mysql> select count(distinct snum) from orders;
++----------------------+
+| count(distinct snum) |
++----------------------+
+|                    5 |
++----------------------+
+1 row in set (0.07 sec)
+
+21. Largest order taken by each salesperson, datewise.
+-->
+select snum, odate, MAX(amt) as 'Largest Order' from orders GROUP BY odate, snum ORDER BY odate,snum;
++------+------------+---------------+
+| snum | odate      | Largest Order |
++------+------------+---------------+
+|    1 | 1994-08-03 |       1713.23 |
+|    2 | 1994-08-03 |       1098.16 |
+|    3 | 1994-08-03 |          4723 |
+|    4 | 1994-08-03 |        1900.1 |
+|    5 | 1994-08-03 |       9891.88 |
++------+------------+---------------+
+5 rows in set (0.07 sec)
+
+
+22. Largest order taken by each salesperson with order value more than $3000.
+--> 
+mysql> select snum, odate, MAX(AMT) as 'Largest Order' from orders where amt>3000 GROUP BY odate,snum ORDER BY odate, snum;
++------+------------+---------------+
+| snum | odate      | Largest Order |
++------+------------+---------------+
+|    3 | 1994-08-03 |          4723 |
+|    5 | 1994-08-03 |       9891.88 |
++------+------------+---------------+
+2 rows in set (0.00 sec)
+
+23. Which day had the highest total amount ordered.
+-->
+mysql> select odate, amt,snum,cnum from orders where amt = (select max(amt) from orders);
++------------+---------+------+------+
+| odate      | amt     | snum | cnum |
++------------+---------+------+------+
+| 1994-08-03 | 9891.88 |    5 |   15 |
++------------+---------+------+------+
+1 row in set (0.05 sec)
+
+24. count all orders for oct 3rd.
+-->
+mysql> select count(*) as 'orders on oct 3rd' from orders where odate = '1994-08-03';
++-------------------+
+| orders on oct 3rd |
++-------------------+
+|                11 |
++-------------------+
+1 row in set (0.07 sec)
+
+25. Count the number of different non null city values in customers table.
+-->
+mysql> select count(distinct city) from customers;
++----------------------+
+| count(distinct city) |
++----------------------+
+|                    5 |
++----------------------+
+1 row in set (0.00 sec)
+
+26. select each customers smallest order.
+-->
+mysql> select cnum, min(amt) from orders group by cnum;
++------+----------+
+| cnum | min(amt) |
++------+----------+
+|   11 |   1900.1 |
+|   12 |    18.96 |
+|   13 |  1713.23 |
+|   14 |  1098.16 |
+|   15 |  9891.88 |
++------+----------+
+5 rows in set (0.05 sec)
+
+27. First customer in alphabetical order whose name begins with A.
+-->
+mysql> select cname from customers where cname like 'A%';
++-----------+
+| cname     |
++-----------+
+| aishwarya |
+| ananya    |
+| ayesha    |
+| akshay    |
++-----------+
+4 rows in set (0.00 sec)
+
+28. Get the output like "For dd/mm/yy there are_orders.
+
+29.Assume that each salesperson has a 12% commission . produce order no., salesperson no, and amount of salesperson's commission for that order.
+-->
+mysql> select onum, snum, amt, amt*0.12 as 'commission' from orders ORDER BY snum;
++------+------+---------+--------------------+
+| onum | snum | amt     | commission         |
++------+------+---------+--------------------+
+|   31 |    1 |   18.96 | 2.2751998901367188 |
+|   36 |    1 | 1713.23 | 205.58759765624998 |
+|   35 |    2 | 1098.16 |  131.7792041015625 |
+|   37 |    2 |   75.75 |               9.09 |
+|   32 |    3 |  767.19 |  92.06280029296875 |
+|   38 |    3 |    4723 |             566.76 |
+|   33 |    4 |  1900.1 |  228.0119970703125 |
+|   39 |    4 | 1309.95 |   157.193994140625 |
+|   34 |    5 | 5160.45 |     619.2540234375 |
+|   40 |    5 | 9891.88 |    1187.0255859375 |
+|   41 |    5 | 5160.45 |     619.2540234375 |
++------+------+---------+--------------------+
+11 rows in set (0.00 sec)
+
+30. From highest rating in each city. Put the output in this form. for the city(city), the highest rating is: (rating).
+
+31. Display the total of orders for each day and place the results in descending order.
+-->
+mysql> select odate, COUNT(onum) as 'Total no of orders' from orders GROUP BY odate ORDER BY count(onum) DESC;
++------------+--------------------+
+| odate      | Total no of orders |
++------------+--------------------+
+| 1994-08-03 |                 11 |
+| 1994-09-04 |                  2 |
+| 1994-10-05 |                  1 |
+| 1994-04-06 |                  1 |
+| 1994-05-09 |                  1 |
++------------+--------------------+
+5 rows in set (0.00 sec)
+
+32. All combinations of salespeople and customers who shared a city (same city).
+-->
+mysql> select sname, cname, s.city as city from salespeople as s, customers as c where s.city = c.city;
++----------+-----------+---------+
+| sname    | cname     | city    |
++----------+-----------+---------+
+| Megha    | aishwarya | Nashik  |
+| vanshika | sonali    | mumbai  |
+| Rahul    | sonali    | Mumbai  |
+| Mayur    | ananya    | pune    |
+| Prachiti | vinni     | Solapur |
+| Varun    | ayesha    | germany |
+| Megha    | akshay    | Nashik  |
++----------+-----------+---------+
+7 rows in set (0.00 sec)
+
+33. Name of all customers matched with the salespeople serving them.
+-->
+mysql> select cname, sname from customers as c, salespeople as s where c.snum = s.snum;
++-----------+----------+
+| cname     | sname    |
++-----------+----------+
+| aishwarya | Megha    |
+| sonali    | Mayur    |
+| ananya    | Rahul    |
+| vinni     | Prachiti |
+| ayesha    | Varun    |
+| akshay    | Megha    |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+34. List each order number followed by the name of the customer who made the order.
+-->
+mysql> select onum, cname from customers as c, orders as o where o.cnum = c.cnum;
++------+-----------+
+| onum | cname     |
++------+-----------+
+|   33 | aishwarya |
+|   38 | aishwarya |
+|   31 | sonali    |
+|   32 | sonali    |
+|   37 | sonali    |
+|   41 | sonali    |
+|   45 | sonali    |
+|   34 | ananya    |
+|   36 | ananya    |
+|   46 | ananya    |
+|   35 | vinni     |
+|   39 | vinni     |
+|   42 | vinni     |
+|   43 | vinni     |
+|   44 | vinni     |
+|   40 | ayesha    |
++------+-----------+
+16 rows in set (0.00 sec)
+
+35. Names of salesperson and customer for each order after the order number.
+
+36. Produce all customer serviced by salespeople with a commission above 12%.
+-->
+mysql> select cname, sname, comm from customers as c, salespeople as s where comm > 0.12 and c.snum = s.snum;
++--------+----------+------+
+| cname  | sname    | comm |
++--------+----------+------+
+| sonali | Mayur    | 0.13 |
+| ananya | Rahul    | 0.14 |
+| vinni  | Prachiti | 0.15 |
+| ayesha | Varun    | 0.16 |
++--------+----------+------+
+4 rows in set (0.05 sec)
+
+37. Calculate the amount of the salespersons commission on each order with a rating above 100.
+-->
+mysql> select sname, amt  * comm, rating from customers as c, salespeople as s, orders as o where rating> 100 AND s.snum = c.snum AND s.snum = o.snum AND o.cnum = c.cnum;
++----------+--------------------+--------+
+| sname    | amt  * comm        | rating |
++----------+--------------------+--------+
+| Mayur    |  9.847499638795853 |    200 |
+| Prachiti |  196.4925004836914 |    200 |
+| Prachiti |  848.6505220035906 |    200 |
+| Varun    | 1582.7007458738808 |    300 |
++----------+--------------------+--------+
+4 rows in set (0.00 sec)
+
+38. Find all pairs of customers having the same rating.
+-->
+mysql> select a.cname, b.cname, a.rating from customers as a, customers as b where a.rating = b.rating and a.cnum!= b.cnum;
++--------+--------+--------+
+| cname  | cname  | rating |
++--------+--------+--------+
+| vinni  | sonali |    200 |
+| akshay | ananya |    300 |
+| ayesha | ananya |    300 |
+| sonali | vinni  |    200 |
+| akshay | ayesha |    300 |
+| ananya | ayesha |    300 |
+| ayesha | akshay |    300 |
+| ananya | akshay |    300 |
++--------+--------+--------+
+8 rows in set (0.00 sec)
+
+39. Policy is to assign three salesperson to each customers. Display all such combinations.
+-->
+mysql> SELECT Cname FROM Customers WHERE City IN ( SELECT City FROM Customers AS C, Orders AS O WHERE C.Cnum = O.Cnum AND O.Snum IN ( SELECT Snum FROM SalesPeople WHERE Sname = 'Megha'));
++--------+
+| Cname  |
++--------+
+| sonali |
+| ananya |
++--------+
+2 rows in set (0.01 sec)
+
+40. Display all customers located in cities where salesman serres has customer;
+-->
+
+41. Find all pairs of customers served by single salesperson.
+-->
+mysql> select distinct a.cname from customers as a, customers as b where a.snum = b.snum and a.cnum!=b.cnum;
++-----------+
+| cname     |
++-----------+
+| akshay    |
+| aishwarya |
++-----------+
+2 rows in set (0.05 sec)
+
+42. Produce all pairs of salespeople which are living in the same city. 
+Exclude combinations of salespeople with themselves as well as duplicates with the order reversed.
+-->
+mysql> select a.sname, b.sname from salespeople a, salespeople b where a.snum > b.snum AND a.city = b.city;
++----------+-------+
+| sname    | sname |
++----------+-------+
+| vanshika | Rahul |
++----------+-------+
+1 row in set (0.06 sec)
+
+43.Produce all pairs of orders by given customer, names that customers and eliminates duplicates.
+-->
+mysql> select c.cname, a.onum, b.onum from orders as a, orders as b, customers as c where a.cnum = b.cnum AND a.onum > b.onum AND c.cnum = a.cnum;
++-----------+------+------+
+| cname     | onum | onum |
++-----------+------+------+
+| aishwarya |   38 |   33 |
+| sonali    |   32 |   31 |
+| sonali    |   37 |   31 |
+| sonali    |   37 |   32 |
+| sonali    |   41 |   31 |
+| sonali    |   41 |   32 |
+| sonali    |   41 |   37 |
+| sonali    |   45 |   31 |
+| sonali    |   45 |   32 |
+| sonali    |   45 |   37 |
+| sonali    |   45 |   41 |
+| ananya    |   36 |   34 |
+| ananya    |   46 |   34 |
+| ananya    |   46 |   36 |
+| vinni     |   39 |   35 |
+| vinni     |   42 |   35 |
+| vinni     |   42 |   39 |
+| vinni     |   43 |   35 |
+| vinni     |   43 |   39 |
+| vinni     |   43 |   42 |
+| vinni     |   44 |   35 |
+| vinni     |   44 |   39 |
+| vinni     |   44 |   42 |
+| vinni     |   44 |   43 |
++-----------+------+------+
+24 rows in set (0.06 sec)
+
+43. Produce names and cities of all customers with the same rating as hoffman.
+-->
+mysql> SELECT Cname, City
+    -> FROM Customers
+    -> WHERE Rating = (SELECT Rating FROM Customers WHERE Cname = 'sonali') AND Cname != 'sonali';
++-------+---------+
+| Cname | City    |
++-------+---------+
+| vinni | solapur |
++-------+---------+
+1 row in set (0.00 sec)
+
+44. Extract all the orders of motika.
+-->
+mysql> select onum from orders where snum = (select snum from salespeople where sname='mayur');
++------+
+| onum |
++------+
+|   35 |
+|   37 |
++------+
+2 rows in set (0.00 sec)
+
+45. All orders orders credited to the same salesperson who services hoffman.
+46. All orders that are greater than average for oct 4.
+-->
+mysql> select * from orders where amt > (select avg(amt) from orders where odate = '1994-08-03');
++------+---------+------------+------+------+
+| onum | amt     | odate      | cnum | snum |
++------+---------+------------+------+------+
+|   34 | 5160.45 | 1994-08-03 |   13 |    5 |
+|   38 |    4723 | 1994-08-03 |   11 |    3 |
+|   40 | 9891.88 | 1994-08-03 |   15 |    5 |
+|   41 | 5160.45 | 1994-08-03 |   12 |    5 |
+|   42 | 5678.67 | 1994-09-04 |   14 |    5 |
+|   43 | 5657.67 | 1994-10-05 |   14 |    4 |
+|   44 | 4598.67 | 1994-04-06 |   14 |    3 |
+|   45 | 6745.67 | 1994-05-09 |   12 |    1 |
+|   46 | 5678.67 | 1994-09-04 |   13 |    4 |
++------+---------+------------+------+------+
+9 rows in set (0.00 sec)
+
+47. Find average commission of salespeople in london.
+--> select avg(comm) from salespeople where city = 'Nashik';
+
+mysql> SELECT avg(comm) From salespeople WHERE city = 'nashik';
++---------------------+
+| avg(comm)           |
++---------------------+
+| 0.10000000149011612 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT avg(comm) From salespeople WHERE city = 'pune';
++---------------------+
+| avg(comm)           |
++---------------------+
+| 0.12999999523162842 |
++---------------------+
+1 row in set (0.00 sec)
+
+48. Find all orders attributed to salespeople servicing customers in london.
+-->
+mysql> select snum, cnum from orders where cnum in (SELECT cnum FROM customers WHERE city = 'mumbai');
++------+------+
+| snum | cnum |
++------+------+
+|    1 |   12 |
+|    3 |   12 |
+|    2 |   12 |
+|    5 |   12 |
+|    1 |   12 |
++------+------+
+5 rows in set (0.00 sec)
+
+49.Extract commissions of all salespeople servicing customers in London.
+-->
+mysql> SELECT comm FROM salespeople WHERE snum IN (SELECT snum FROM customers WHERE city = 'solapur');
++------+
+| comm |
++------+
+| 0.15 |
++------+
+1 row in set (0.00 sec)
+
+mysql> SELECT comm FROM salespeople WHERE snum IN (SELECT snum FROM customers WHERE city = 'nashik');
++------+
+| comm |
++------+
+|  0.1 |
++------+
+1 row in set (0.00 sec)
+
+50. Find all customers whose cnum is 1000 above the snum of serres.
+-->
+mysql> SELECT cnum, cname from customers where cnum> ( SELECT snum + 1 FROM salespeople WHERE sname = 'megha');
++------+-----------+
+| cnum | cname     |
++------+-----------+
+|   11 | aishwarya |
+|   12 | sonali    |
+|   13 | ananya    |
+|   14 | vinni     |
+|   15 | ayesha    |
+|   16 | akshay    |
++------+-----------+
+6 rows in set (0.00 sec)
+
+**********
+
